@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mini FC - Tirs au But</title>
+<style>
+  body{margin:0;background:#0a7a2f;font-family:sans-serif;color:white;text-align:center;overflow:hidden}
+  h1{font-size:20px;margin:10px}
+  #score{font-size:18px;font-weight:bold}
+  #terrain{position:relative;width:95vw;max-width:400px;height:55vh;background:linear-gradient(#2f9e44,#1e7a32);margin:10px auto;border:3px solid white;border-radius:10px;overflow:hidden}
+  #but{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:70%;height:80px;border:4px solid white;border-top:none;background:rgba(255,255,255,0.15)}
+  #gardien{position:absolute;top:35px;left:50%;transform:translateX(-50%);font-size:45px;transition:0.3s}
+  #ballon{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);font-size:45px;transition:0.5s}
+  .zone{position:absolute;width:33%;height:100%;top:0;cursor:pointer}
+  #msg{height:30px;font-weight:bold;margin-top:5px}
+  button{padding:12px 20px;font-size:16px;border:none;border-radius:20px;background:#ffcc00;font-weight:bold}
+</style>
+</head>
+<body>
+<h1>⚽ MINI FC - TIRS AU BUT</h1>
+<div id="score">Buts: 0 | Ratés: 0</div>
+<div id="terrain">
+  <div id="but"></div>
+  <div id="gardien">🧤</div>
+  <div id="ballon">⚽</div>
+  <div class="zone" style="left:0" onclick="tirer('gauche')"></div>
+  <div class="zone" style="left:33%" onclick="tirer('centre')"></div>
+  <div class="zone" style="left:66%" onclick="tirer('droite')"></div>
+</div>
+<div id="msg">Choisis où tirer : Gauche, Centre ou Droite !</div>
+<br><button onclick="recommencer()">Rejouer 🔄</button>
+<script>
+let buts=0, rates=0;
+function tirer(choix){
+  let gardienChoix = ['gauche','centre','droite'][Math.floor(Math.random()*3)];
+  let g = document.getElementById('gardien');
+  let b = document.getElementById('ballon');
+  let msg = document.getElementById('msg');
+  if(gardienChoix=='gauche') g.style.left='25%';
+  if(gardienChoix=='centre') g.style.left='50%';
+  if(gardienChoix=='droite') g.style.left='75%';
+  if(choix=='gauche') b.style.left='25%';
+  if(choix=='centre') b.style.left='50%';
+  if(choix=='droite') b.style.left='75%';
+  b.style.bottom='180px';
+  setTimeout(()=>{
+    if(choix===gardienChoix){ rates++; msg.innerText='🧤 ARRÊTÉ ! Le gardien a plongé du bon côté !'; }
+    else { buts++; msg.innerText='🎉 GOOOAL !!! Bien joué !'; }
+    document.getElementById('score').innerText=`Buts: ${buts} | Ratés: ${rates}`;
+    setTimeout(()=>{ b.style.left='50%'; b.style.bottom='20px'; g.style.left='50%'; },800);
+  },500);
+}
+function recommencer(){ buts=0; rates=0; document.getElementById('score').innerText='Buts: 0 | Ratés: 0'; document.getElementById('msg').innerText='Choisis où tirer !'; }
+</script>
+</body>
+</html>
